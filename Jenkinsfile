@@ -43,7 +43,7 @@ pipeline {
             container( 'jetty-build' ) {
               timeout( time: 240, unit: 'MINUTES' ) {
                 mavenBuild( "jdk11", "clean install -T3 -Djacoco.skip=true -Perrorprone -Premote-session-tests -Pgcloud", "maven3")
-                recordIssues enabledForFailure: true, tools: [java()]
+                recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), checkStyle(), spotBugs()]
               }
             }
           }
@@ -55,7 +55,6 @@ pipeline {
             container( 'jetty-build' ) {
               timeout( time: 240, unit: 'MINUTES' ) {
                 mavenBuild( "jdk15", "clean install -T3 -Djacoco.skip=true -Premote-session-tests -Pgcloud", "maven3")
-                recordIssues enabledForFailure: true, tools: [java()]
               }
             }
           }
