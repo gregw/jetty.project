@@ -31,7 +31,7 @@ pipeline {
                        execPattern: '**/target/jacoco.exec',
                        classPattern: '**/target/classes',
                        sourcePattern: '**/src/main/java'
-                recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), checkStyle(), spotBugs(),pmdParser()]
+                recordIssues id: "jdk8", enabledForFailure: true, tools: [mavenConsole(), java(), checkStyle(), spotBugs(), pmdParser()]
               }
             }
           }
@@ -43,7 +43,7 @@ pipeline {
             container( 'jetty-build' ) {
               timeout( time: 240, unit: 'MINUTES' ) {
                 mavenBuild( "jdk11", "clean install -T3 -Djacoco.skip=true -Perrorprone -Premote-session-tests -Pgcloud", "maven3")
-                recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), checkStyle(), spotBugs()]
+                recordIssues id: "jdk11", enabledForFailure: true, tools: [mavenConsole(), java(), checkStyle(), spotBugs(), pmdParser()]
               }
             }
           }
@@ -55,6 +55,7 @@ pipeline {
             container( 'jetty-build' ) {
               timeout( time: 240, unit: 'MINUTES' ) {
                 mavenBuild( "jdk15", "clean install -T3 -Djacoco.skip=true -Premote-session-tests -Pgcloud", "maven3")
+                recordIssues id: "jdk15", enabledForFailure: true, tools: [mavenConsole(), java(), checkStyle(), spotBugs(), pmdParser()]
               }
             }
           }
@@ -68,7 +69,7 @@ pipeline {
                 mavenBuild( "jdk11",
                             "install javadoc:javadoc javadoc:aggregate-jar -DskipTests -Dpmd.skip=true -Dcheckstyle.skip=true",
                             "maven3")
-                recordIssues enabledForFailure: true, tools: [javaDoc()]
+                recordIssues id: "javadoc", enabledForFailure: true, tools: [javaDoc()]
               }
             }
           }
